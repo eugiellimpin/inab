@@ -6,13 +6,13 @@ class TransactionForm extends Component {
   render() {
     return (
       <div>
-        <input type="text" value="07/03/2017" name="transaction-date" />
-        <input type="text" value="Ramen Kuroda" name="payee" />
-        <input type="text" value="Food" name="category" />
-        <input type="text" value="Chicken Teriyaki Don" name="memo" />
-        <input type="text" value="180.00" name="outflow" />
-        <input type="text" value="" name="inflow" />
-        <input type="submit" value="Save" />
+        <input type="text" defaultValue="07/03/2017" name="transaction-date" />
+        <input type="text" defaultValue="Ramen Kuroda" name="payee" />
+        <input type="text" defaultValue="Food" name="category" />
+        <input type="text" defaultValue="Chicken Teriyaki Don" name="memo" />
+        <input type="text" defaultValue="180.00" name="outflow" />
+        <input type="text" defaultValue="" name="inflow" />
+        <input type="submit" onClick={() => this.props.onSubmit()} value="Save" />
       </div>
     );
   }
