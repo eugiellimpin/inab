@@ -21,7 +21,7 @@ class TransactionForm extends Component {
   render() {
     return (
       <div>
-        <input type="text" onChange={this.handleInputChange} value={this.state.transactionDate} placeholder="Transaction Date" name="transactionDate" />
+        <input type="date" onChange={this.handleInputChange} value={this.state.transactionDate} placeholder="Transaction Date" name="transactionDate" />
         <input type="text" onChange={this.handleInputChange} value={this.state.payee} placeholder="Payee" name="payee" />
         <input type="text" onChange={this.handleInputChange} value={this.state.category} placeholder="Category" name="category" />
         <input type="text" onChange={this.handleInputChange} value={this.state.memo} placeholder="Memo" name="memo" />
