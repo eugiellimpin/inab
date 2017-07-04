@@ -19,11 +19,19 @@ class TransactionForm extends Component {
   }
 
   render() {
+    const categoryOptions = this.props.categories.map((category) => (
+      <option value={category}>{category}</option>
+    ));
+
     return (
       <div>
         <input type="date" onChange={this.handleInputChange} value={this.state.transactionDate} placeholder="Transaction Date" name="transactionDate" />
         <input type="text" onChange={this.handleInputChange} value={this.state.payee} placeholder="Payee" name="payee" />
-        <input type="text" onChange={this.handleInputChange} value={this.state.category} placeholder="Category" name="category" />
+
+        <select onChange={this.handleInputChange} value={this.state.category} name="category">
+          {categoryOptions}
+        </select>
+
         <input type="text" onChange={this.handleInputChange} value={this.state.memo} placeholder="Memo" name="memo" />
         <input type="text" onChange={this.handleInputChange} value={this.state.outflow} placeholder="Outflow" name="outflow" />
         <input type="text" onChange={this.handleInputChange} value={this.state.inflow} placeholder="Inflow" name="inflow" />
@@ -64,8 +72,15 @@ class TransactionList extends Component {
       { transactionDate: '06/30/2017', payee: 'Myself', category: 'To be Budgeted', memo: 'Quipper Income', outflow: '', inflow: '20000.00'},
     ];
 
+    const categories = [
+      'Food',
+      'Transportation',
+      'Groceries',
+    ]
+
     this.state = {
-      transactions
+      transactions,
+      categories
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -78,7 +93,7 @@ class TransactionList extends Component {
 
     return (
       <div>
-        <TransactionForm onSubmit={this.handleSubmit} />
+        <TransactionForm onSubmit={this.handleSubmit} categories={this.state.categories} />
 
         <table>
           <thead>
