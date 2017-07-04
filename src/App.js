@@ -3,18 +3,37 @@ import logo from './logo.svg';
 import './App.css';
 
 class TransactionForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      transactionDate: '',
+      payee: '',
+      category: '',
+      memo: '',
+      outflow: '',
+      inflow: '',
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
   render() {
     return (
       <div>
-        <input type="text" defaultValue="07/03/2017" name="transaction-date" />
-        <input type="text" defaultValue="Ramen Kuroda" name="payee" />
-        <input type="text" defaultValue="Food" name="category" />
-        <input type="text" defaultValue="Chicken Teriyaki Don" name="memo" />
-        <input type="text" defaultValue="180.00" name="outflow" />
-        <input type="text" defaultValue="" name="inflow" />
-        <input type="submit" onClick={() => this.props.onSubmit()} value="Save" />
+        <input type="text" onChange={this.handleInputChange} value={this.state.transactionDate} placeholder="Transaction Date" name="transactionDate" />
+        <input type="text" onChange={this.handleInputChange} value={this.state.payee} placeholder="Payee" name="payee" />
+        <input type="text" onChange={this.handleInputChange} value={this.state.category} placeholder="Category" name="category" />
+        <input type="text" onChange={this.handleInputChange} value={this.state.memo} placeholder="Memo" name="memo" />
+        <input type="text" onChange={this.handleInputChange} value={this.state.outflow} placeholder="Outflow" name="outflow" />
+        <input type="text" onChange={this.handleInputChange} value={this.state.inflow} placeholder="Inflow" name="inflow" />
+        <input type="submit" onClick={() => this.props.onSubmit(this.state)} value="Save" />
       </div>
     );
+  }
+
+  handleInputChange({ target }) {
+    this.setState({ [target.name]: target.value });
   }
 }
 
@@ -22,7 +41,7 @@ class Transaction extends Component {
   render() {
     return (
       <tr>
-        <td>{this.props.details.date}</td>
+        <td>{this.props.details.transactionDate}</td>
         <td>{this.props.details.payee}</td>
         <td>{this.props.details.category}</td>
         <td>{this.props.details.memo}</td>
@@ -34,14 +53,32 @@ class Transaction extends Component {
 }
 
 class TransactionList extends Component {
+  constructor(props) {
+    super(props);
+
+    const transactions = [
+      { transactionDate: '07/03/2017', payee: 'Ramen Kuroda', category: 'Food', memo: 'Chicken Teriyaki Don', outflow: '180.00', inflow: ''},
+      { transactionDate: '07/03/2017', payee: 'Pan De Manila', category: 'Food', memo: 'Breakfast', outflow: '80.00', inflow: ''},
+      { transactionDate: '07/02/2017', payee: 'Tricycle', category: 'Transportation', memo: '', outflow: '20', inflow: ''},
+      { transactionDate: '07/02/2017', payee: 'Cash & Carry', category: 'Grocery', memo: '', outflow: '500.00', inflow: ''},
+      { transactionDate: '06/30/2017', payee: 'Myself', category: 'To be Budgeted', memo: 'Quipper Income', outflow: '', inflow: '20000.00'},
+    ];
+
+    this.state = {
+      transactions
+    }
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   render() {
-    const transactionRows = this.props.transactions.map((txn) => (
+    const transactionRows = this.state.transactions.map((txn) => (
       <Transaction details={txn} />
     ));
 
     return (
       <div>
-        <TransactionForm />
+        <TransactionForm onSubmit={this.handleSubmit} />
 
         <table>
           <thead>
@@ -54,24 +91,24 @@ class TransactionList extends Component {
               <th>Inflow</th>
             </tr>
           </thead>
-          {transactionRows}
+          <tbody>
+            {transactionRows}
+          </tbody>
         </table>
       </div>
     );
   }
+
+  handleSubmit(transaction) {
+    this.setState({
+      transactions: [...this.state.transactions, transaction]
+    })
+  }
 }
 class App extends Component {
   render() {
-    const transactions = [
-      { date: '07/03/2017', payee: 'Ramen Kuroda', category: 'Food', memo: 'Chicken Teriyaki Don', outflow: '180.00', inflow: ''},
-      { date: '07/03/2017', payee: 'Pan De Manila', category: 'Food', memo: 'Breakfast', outflow: '80.00', inflow: ''},
-      { date: '07/02/2017', payee: 'Tricycle', category: 'Transportation', memo: '', outflow: '20', inflow: ''},
-      { date: '07/02/2017', payee: 'Cash & Carry', category: 'Grocery', memo: '', outflow: '500.00', inflow: ''},
-      { date: '06/30/2017', payee: 'Myself', category: 'To be Budgeted', memo: 'Quipper Income', outflow: '', inflow: '20000.00'},
-    ];
-
     return (
-      <TransactionList transactions={transactions} />
+      <TransactionList />
     );
   }
 }
