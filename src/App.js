@@ -125,12 +125,38 @@ class TransactionList extends Component {
     );
   }
 
-  handleSubmit(transaction) {
-    this.setState({
-      transactions: [...this.state.transactions, transaction]
-    })
+  handleSubmit = (transaction) => {
+    const flow = { inflow: null, outflow: null }
+    let inflow = !!transaction.inflow;
+
+    // Either inflow has a value or outflow has a value or both don't have a
+    // value
+    let amount = Number.parseFloat(transaction.inflow);
+    if (!inflow) {
+      amount = Number.parseFloat(transaction.outflow);
+    }
+
+    // Ignore non-numeric values and 0
+    if (!Number.isNaN(amount) && amount > 0) {
+      // If value is negative make it positive and reverse the flow
+      if (amount < 0) {
+        inflow = !inflow;
+        amount = amount * -1;
+      }
+
+      if (inflow) {
+        flow.inflow = amount;
+      } else {
+        flow.outflow = amount;
+      }
+    }
+
+    const newTransaction = Object.assign({}, transaction, flow)
+
+    this.setState({ transactions: [...this.state.transactions, newTransaction] })
   }
 }
+
 class App extends Component {
   render() {
     return (
