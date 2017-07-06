@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import './App.css';
 
 class TransactionForm extends Component {
+  getInitialState = () => ({
+    transactionDate: '',
+    payee: '',
+    category: this.props.categories[0],
+    memo: '',
+    outflow: '',
+    inflow: '',
+  })
+
   constructor(props) {
     super(props);
-
-    this.state = {
-      transactionDate: '',
-      payee: '',
-      category: this.props.categories[0],
-      memo: '',
-      outflow: '',
-      inflow: '',
-    };
+    this.state = this.getInitialState();
   }
 
   render() {
@@ -32,9 +33,14 @@ class TransactionForm extends Component {
         <input type="text" onChange={this.handleInputChange} value={this.state.memo} placeholder="Memo" name="memo" />
         <input type="text" onChange={this.handleInputChange} value={this.state.outflow} placeholder="Outflow" name="outflow" />
         <input type="text" onChange={this.handleInputChange} value={this.state.inflow} placeholder="Inflow" name="inflow" />
-        <input type="submit" onClick={() => this.props.onSubmit(this.state)} value="Save" />
+        <input type="submit" onClick={this.handleSubmit} value="Save" />
       </div>
     );
+  }
+
+  handleSubmit = () => {
+    this.props.onSubmit(this.state);
+    this.setState(this.getInitialState());
   }
 
   handleInputChange = ({ target }) => {
