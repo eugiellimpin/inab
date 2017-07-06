@@ -13,8 +13,6 @@ class TransactionForm extends Component {
       outflow: '',
       inflow: '',
     };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   render() {
@@ -39,8 +37,22 @@ class TransactionForm extends Component {
     );
   }
 
-  handleInputChange({ target }) {
-    this.setState({ [target.name]: target.value });
+  handleInputChange = ({ target }) => {
+    const value = target.value;
+    const name = target.name;
+    let changes = { [name]: value };
+
+    if (name.endsWith('flow')) {
+      if (name === 'inflow' && value.length > 0) {
+        changes.outflow = '';
+      }
+
+      if (name === 'outflow' && value.length > 0) {
+        changes.inflow = '';
+      }
+    }
+
+    this.setState(changes);
   }
 }
 
