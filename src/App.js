@@ -8,7 +8,7 @@ class TransactionForm extends Component {
     this.state = {
       transactionDate: '',
       payee: '',
-      category: '',
+      category: this.props.categories[0],
       memo: '',
       outflow: '',
       inflow: '',
