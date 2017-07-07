@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
 import './App.css';
 
 class TransactionForm extends Component {
@@ -163,12 +168,22 @@ class TransactionList extends Component {
   }
 }
 
-class App extends Component {
-  render() {
-    return (
-      <TransactionList />
-    );
-  }
-}
+const Budget = () => (
+  <div>This here is my budget!</div>
+);
+
+const App = () => (
+  <Router>
+    <div>
+      <ul>
+        <li><Link to="/">Budget</Link></li>
+        <li><Link to="/accounts">Accounts</Link></li>
+      </ul>
+
+      <Route exact path="/" component={Budget} />
+      <Route path="/accounts" component={TransactionList} />
+    </div>
+  </Router>
+);
 
 export default App;
