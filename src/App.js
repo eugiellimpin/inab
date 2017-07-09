@@ -174,12 +174,26 @@ class TransactionList extends Component {
   }
 }
 
-const BudgetCategory = (props) => {
-}
+const BudgetCategory = (props) => (
+  <Form inline className="row">
+    <div className="col-sm-3">
+      <span>{props.name}</span>
+    </div>
+    <div className="col-sm-3">
+      <Input type="text" name="budget" size="sm" value={props.budget} />
+    </div>
+    <div className="col-sm-3">
+      <Input type="text" name="activity" size="sm" value={props.activity} disabled />
+    </div>
+    <div className="col-sm-3">
+      <Input type="text" name="available" size="sm" value={props.available} disabled />
+    </div>
+  </Form>
+);
 
 const BudgetCategoryGroup = (props) => {
   const categories = props.categories.map((category) => (
-    <li>{category}</li>
+    <BudgetCategory {...category} />
   ));
 
   return (
@@ -193,10 +207,26 @@ const BudgetCategoryGroup = (props) => {
 
 const Budget = () => {
   const categoryGroups = [
-    { name: 'Immediate Obligations', categories: ['Rent/Mortgage', 'Electric', 'Water', 'Internet', 'Groceries', 'Transportation'] },
-    { name: 'True Expenses', categories: ['Clothing', 'Medical'] },
-    { name: 'Quality of Life Goals', categories: ['Vacation', 'Fitness', 'Education'] },
-    { name: 'Just for Fun', categories: ['Dining Out', 'Gaming', 'Fun Money'] },
+    {
+      name: 'Immediate Obligations',
+      categories: [
+        { name: 'Rent/Mortgage', budget: 0, activity: 0, available: 0 },
+        { name: 'Electric', budget: 0, activity: 0, available: 0 },
+        { name: 'Water', budget: 0, activity: 0, available: 0 },
+        { name: 'Internet', budget: 0, activity: 0, available: 0 },
+        { name: 'Groceries', budget: 0, activity: 0, available: 0 },
+        { name: 'Transportation', budget: 0, activity: 0, available: 0 },
+      ],
+    },
+    {
+      name: 'True Expenses',
+      categories: [
+        { name: 'Clothing', budget: 0, activity: 0, available: 0 },
+        { name: 'Medical', budget: 0, activity: 0, available: 0 },
+      ]
+    },
+    // { name: 'Quality of Life Goals', categories: ['Vacation', 'Fitness', 'Education'] },
+    // { name: 'Just for Fun', categories: ['Dining Out', 'Gaming', 'Fun Money'] },
   ];
 
   const groups = categoryGroups.map((group) => (
