@@ -4,6 +4,12 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+import {
+  Button,
+  Form,
+  FormGroup,
+  Input
+} from 'reactstrap';
 import './App.css';
 
 class TransactionForm extends Component {
@@ -27,19 +33,19 @@ class TransactionForm extends Component {
     ));
 
     return (
-      <div>
-        <input type="date" onChange={this.handleInputChange} value={this.state.transactionDate} placeholder="Transaction Date" name="transactionDate" />
-        <input type="text" onChange={this.handleInputChange} value={this.state.payee} placeholder="Payee" name="payee" />
+      <Form inline>
+        <Input type="date" name="transactionDate" size="sm" placeholder="Transaction Date" onChange={this.handleInputChange} value={this.state.transactionDate} />
+        <Input type="text" name="payee" size="sm" placeholder="Payee" onChange={this.handleInputChange} value={this.state.payee} />
 
-        <select onChange={this.handleInputChange} value={this.state.category} name="category">
+        <Input type="select" name="category" size="sm" onChange={this.handleInputChange} value={this.state.category} >
           {categoryOptions}
-        </select>
+        </Input>
 
-        <input type="text" onChange={this.handleInputChange} value={this.state.memo} placeholder="Memo" name="memo" />
-        <input type="text" onChange={this.handleInputChange} value={this.state.outflow} placeholder="Outflow" name="outflow" />
-        <input type="text" onChange={this.handleInputChange} value={this.state.inflow} placeholder="Inflow" name="inflow" />
-        <input type="submit" onClick={this.handleSubmit} value="Save" />
-      </div>
+        <Input type="text" name="memo" size="sm" placeholder="Memo" onChange={this.handleInputChange} value={this.state.memo} />
+        <Input type="text" name="outflow" size="sm" placeholder="Outflow" onChange={this.handleInputChange} value={this.state.outflow}  />
+        <Input type="text" name="inflow" size="sm" placeholder="Inflow" onChange={this.handleInputChange} value={this.state.inflow} />
+        <Button color="primary" size="sm" onClick={this.handleSubmit} >Save</Button>
+      </Form>
     );
   }
 
