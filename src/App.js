@@ -174,7 +174,10 @@ class TransactionList extends Component {
   }
 }
 
-const CategoryGroup = (props) => {
+const BudgetCategory = (props) => {
+}
+
+const BudgetCategoryGroup = (props) => {
   const categories = props.categories.map((category) => (
     <li>{category}</li>
   ));
@@ -197,7 +200,7 @@ const Budget = () => {
   ];
 
   const groups = categoryGroups.map((group) => (
-      <CategoryGroup name={group.name} categories={group.categories} />
+      <BudgetCategoryGroup name={group.name} categories={group.categories} />
   ));
 
   return (
