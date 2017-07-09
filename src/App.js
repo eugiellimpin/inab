@@ -168,9 +168,38 @@ class TransactionList extends Component {
   }
 }
 
-const Budget = () => (
-  <div>This here is my budget!</div>
-);
+const CategoryGroup = (props) => {
+  const categories = props.categories.map((category) => (
+    <li>{category}</li>
+  ));
+
+  return (
+    <div>
+      <h3>{props.name}</h3>
+
+      <ul>{categories}</ul>
+    </div>
+  );
+};
+
+const Budget = () => {
+  const categoryGroups = [
+    { name: 'Immediate Obligations', categories: ['Rent/Mortgage', 'Electric', 'Water', 'Internet', 'Groceries', 'Transportation'] },
+    { name: 'True Expenses', categories: ['Clothing', 'Medical'] },
+    { name: 'Quality of Life Goals', categories: ['Vacation', 'Fitness', 'Education'] },
+    { name: 'Just for Fun', categories: ['Dining Out', 'Gaming', 'Fun Money'] },
+  ];
+
+  const groups = categoryGroups.map((group) => (
+      <CategoryGroup name={group.name} categories={group.categories} />
+  ));
+
+  return (
+    <div>
+      {groups}
+    </div>
+  );
+};
 
 const App = () => (
   <Router>
