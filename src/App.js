@@ -8,7 +8,9 @@ import {
   Button,
   Form,
   FormGroup,
-  Input
+  Input,
+  Popover,
+  PopoverContent,
 } from 'reactstrap';
 import './App.css';
 
@@ -191,23 +193,47 @@ const BudgetCategory = (props) => (
   </Form>
 );
 
-const BudgetCategoryGroup = (props) => {
-  const categories = props.categories.map((category) => (
-    <BudgetCategory {...category} />
-  ));
+class BudgetCategoryGroup extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div>
-      <h3>{props.name}</h3>
+    this.state = {
+      newCategoryFormOpen: false
+    };
+  }
 
-      <ul>{categories}</ul>
-    </div>
-  );
-};
+  toggleNewCategoryForm = (event) => {
+    this.setState({ newCategoryFormOpen: !this.state.newCategoryFormOpen });
+  }
+
+  render() {
+    const categories = this.props.categories.map((category) => (
+      <BudgetCategory {...category} />
+    ));
+
+    return (
+      <div>
+        <div>
+          <h3>{this.props.name}</h3>
+          <Button id={this.props.id} onClick={this.toggleNewCategoryForm} size="sm">Add category</Button>
+          <Popover
+            placement="bottom"
+            isOpen={this.state.newCategoryFormOpen}
+            target={this.props.id} >
+            <PopoverContent>Test</PopoverContent>
+          </Popover>
+        </div>
+
+        <ul>{categories}</ul>
+      </div>
+    );
+  }
+}
 
 const Budget = () => {
   const categoryGroups = [
     {
+      id: 'immediate-obligations',
       name: 'Immediate Obligations',
       categories: [
         { name: 'Rent/Mortgage', budget: 0, activity: 0, available: 0 },
@@ -219,6 +245,7 @@ const Budget = () => {
       ],
     },
     {
+      id: 'true-expenses',
       name: 'True Expenses',
       categories: [
         { name: 'Clothing', budget: 0, activity: 0, available: 0 },
@@ -230,7 +257,7 @@ const Budget = () => {
   ];
 
   const groups = categoryGroups.map((group) => (
-      <BudgetCategoryGroup name={group.name} categories={group.categories} />
+      <BudgetCategoryGroup {...group} />
   ));
 
   return (
