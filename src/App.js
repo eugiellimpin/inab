@@ -176,6 +176,16 @@ class TransactionList extends Component {
   }
 }
 
+const CategoryForm = (props) => (
+  <div>
+    <FormGroup>
+      <Input ref={(input) => this.categoryName = input} type="text" size="sm" placeholder="New Category" />
+    </FormGroup>
+    <Button onClick={props.onCancel} color="secondary" size="sm">Cancel</Button>
+    <Button onClick={() => props.onSubmit(this.categoryName.value)} color="primary" size="sm">Add</Button>
+  </div>
+);
+
 const BudgetCategory = (props) => (
   <Form inline className="row">
     <div className="col-sm-3">
@@ -206,6 +216,11 @@ class BudgetCategoryGroup extends Component {
     this.setState({ newCategoryFormOpen: !this.state.newCategoryFormOpen });
   }
 
+  handleCategoryFormSubmit = (categoryName) => {
+    console.log('new category is ' + categoryName);
+    this.toggleNewCategoryForm();
+  }
+
   render() {
     const categories = this.props.categories.map((category) => (
       <BudgetCategory {...category} />
@@ -217,10 +232,13 @@ class BudgetCategoryGroup extends Component {
           <h3>{this.props.name}</h3>
           <Button id={this.props.id} onClick={this.toggleNewCategoryForm} size="sm">Add category</Button>
           <Popover
-            placement="bottom"
+            placement="right"
             isOpen={this.state.newCategoryFormOpen}
-            target={this.props.id} >
-            <PopoverContent>Test</PopoverContent>
+            target={this.props.id}
+            toggle={this.toggleNewCategoryForm} >
+            <PopoverContent>
+              <CategoryForm onCancel={this.toggleNewCategoryForm} onSubmit={this.handleCategoryFormSubmit} />
+            </PopoverContent>
           </Popover>
         </div>
 
