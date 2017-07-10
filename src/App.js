@@ -248,42 +248,48 @@ class BudgetCategoryGroup extends Component {
   }
 }
 
-const Budget = () => {
-  const categoryGroups = [
-    {
-      id: 'immediate-obligations',
-      name: 'Immediate Obligations',
-      categories: [
-        { name: 'Rent/Mortgage', budget: 0, activity: 0, available: 0 },
-        { name: 'Electric', budget: 0, activity: 0, available: 0 },
-        { name: 'Water', budget: 0, activity: 0, available: 0 },
-        { name: 'Internet', budget: 0, activity: 0, available: 0 },
-        { name: 'Groceries', budget: 0, activity: 0, available: 0 },
-        { name: 'Transportation', budget: 0, activity: 0, available: 0 },
-      ],
-    },
-    {
-      id: 'true-expenses',
-      name: 'True Expenses',
-      categories: [
-        { name: 'Clothing', budget: 0, activity: 0, available: 0 },
-        { name: 'Medical', budget: 0, activity: 0, available: 0 },
-      ]
-    },
-    // { name: 'Quality of Life Goals', categories: ['Vacation', 'Fitness', 'Education'] },
-    // { name: 'Just for Fun', categories: ['Dining Out', 'Gaming', 'Fun Money'] },
-  ];
+class Budget extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-  const groups = categoryGroups.map((group) => (
-    <BudgetCategoryGroup {...group} />
-  ));
+  render() {
+    const categoryGroups = [
+      {
+        id: 'immediate-obligations',
+        name: 'Immediate Obligations',
+        categories: [
+          { name: 'Rent/Mortgage', budget: 0, activity: 0, available: 0 },
+          { name: 'Electric', budget: 0, activity: 0, available: 0 },
+          { name: 'Water', budget: 0, activity: 0, available: 0 },
+          { name: 'Internet', budget: 0, activity: 0, available: 0 },
+          { name: 'Groceries', budget: 0, activity: 0, available: 0 },
+          { name: 'Transportation', budget: 0, activity: 0, available: 0 },
+        ],
+      },
+      {
+        id: 'true-expenses',
+        name: 'True Expenses',
+        categories: [
+          { name: 'Clothing', budget: 0, activity: 0, available: 0 },
+          { name: 'Medical', budget: 0, activity: 0, available: 0 },
+        ]
+      },
+      // { name: 'Quality of Life Goals', categories: ['Vacation', 'Fitness', 'Education'] },
+      // { name: 'Just for Fun', categories: ['Dining Out', 'Gaming', 'Fun Money'] },
+    ];
 
-  return (
-    <div>
-      {groups}
-    </div>
-  );
-};
+    const groups = categoryGroups.map((group) => (
+      <BudgetCategoryGroup {...group} />
+    ));
+
+    return (
+      <div>
+        {groups}
+      </div>
+    );
+  }
+}
 
 const App = () => (
   <Router>
