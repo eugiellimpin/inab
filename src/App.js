@@ -275,7 +275,7 @@ const Budget = () => {
   ];
 
   const groups = categoryGroups.map((group) => (
-      <BudgetCategoryGroup {...group} />
+    <BudgetCategoryGroup {...group} />
   ));
 
   return (
