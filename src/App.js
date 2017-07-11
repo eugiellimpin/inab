@@ -221,7 +221,7 @@ class BudgetCategory extends Component {
           <span>{this.state.name}</span>
         </div>
         <div className="col-sm-3">
-          <Input type="text" name="budget" size="sm" value={this.state.budget} onChange={this.handleInputChange}/>
+          <Input type="text" name="budget" size="sm" value={this.state.budget} onChange={this.handleInputChange} onClick={(event) => event.target.select() } />
         </div>
         <div className="col-sm-3">
           <Input type="text" name="activity" size="sm" value={this.state.activity} disabled />
