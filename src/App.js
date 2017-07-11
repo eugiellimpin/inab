@@ -176,15 +176,34 @@ class TransactionList extends Component {
   }
 }
 
-const CategoryForm = (props) => (
-  <div>
-    <FormGroup>
-      <Input ref={(input) => this.categoryName = input} type="text" size="sm" placeholder="New Category" />
-    </FormGroup>
-    <Button onClick={props.onCancel} color="secondary" size="sm">Cancel</Button>
-    <Button onClick={() => props.onSubmit(this.categoryName.value)} color="primary" size="sm">Add</Button>
-  </div>
-);
+class CategoryForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: ''
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <FormGroup>
+          <Input value={this.state.name} name="name" onChange={this.handleInputChange} type="text" size="sm" placeholder="New Category" />
+        </FormGroup>
+        <Button onClick={this.props.onCancel} color="secondary" size="sm">Cancel</Button>
+        <Button onClick={this.handleSubmit} color="primary" size="sm">Add</Button>
+      </div>
+    );
+  }
+
+  handleInputChange = ({ target }) => {
+    this.setState({ [target.name]: target.value });
+  }
+
+  handleSubmit = () => {
+    this.props.onSubmit(this.state.name);
+  }
+}
 
 const BudgetCategory = (props) => (
   <Form inline className="row">
@@ -217,7 +236,7 @@ class BudgetCategoryGroup extends Component {
   }
 
   handleCategoryFormSubmit = (categoryName) => {
-    console.log('new category is ' + categoryName);
+    this.props.onAddNewCategory(categoryName);
     this.toggleNewCategoryForm();
   }
 
@@ -251,9 +270,7 @@ class BudgetCategoryGroup extends Component {
 class Budget extends Component {
   constructor(props) {
     super(props);
-  }
 
-  render() {
     const categoryGroups = [
       {
         id: 'immediate-obligations',
@@ -279,8 +296,14 @@ class Budget extends Component {
       // { name: 'Just for Fun', categories: ['Dining Out', 'Gaming', 'Fun Money'] },
     ];
 
-    const groups = categoryGroups.map((group) => (
-      <BudgetCategoryGroup {...group} />
+    this.state = {
+      categoryGroups
+    };
+  }
+
+  render() {
+    const groups = this.state.categoryGroups.map((group) => (
+      <BudgetCategoryGroup {...group} onAddNewCategory={this.handleAddNewCategory(group.id)}  />
     ));
 
     return (
@@ -288,6 +311,11 @@ class Budget extends Component {
         {groups}
       </div>
     );
+  }
+
+  handleAddNewCategory = (categoryGroupId) => (newCategoryName) => {
+    const categoryGroup = this.state.categoryGroups.find((group) => group.id === categoryGroupId);
+    categoryGroup.categories.push({ name: newCategoryName, budget: 0, activity: 0, available: 0 });
   }
 }
 
