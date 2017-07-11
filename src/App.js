@@ -205,22 +205,38 @@ class CategoryForm extends Component {
   }
 }
 
-const BudgetCategory = (props) => (
-  <Form inline className="row">
-    <div className="col-sm-3">
-      <span>{props.name}</span>
-    </div>
-    <div className="col-sm-3">
-      <Input type="text" name="budget" size="sm" value={props.budget} />
-    </div>
-    <div className="col-sm-3">
-      <Input type="text" name="activity" size="sm" value={props.activity} disabled />
-    </div>
-    <div className="col-sm-3">
-      <Input type="text" name="available" size="sm" value={props.available} disabled />
-    </div>
-  </Form>
-);
+class BudgetCategory extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      ...props
+    }
+  }
+
+  render() {
+    return (
+      <Form inline className="row">
+        <div className="col-sm-3">
+          <span>{this.state.name}</span>
+        </div>
+        <div className="col-sm-3">
+          <Input type="text" name="budget" size="sm" value={this.state.budget} onChange={this.handleInputChange}/>
+        </div>
+        <div className="col-sm-3">
+          <Input type="text" name="activity" size="sm" value={this.state.activity} disabled />
+        </div>
+        <div className="col-sm-3">
+          <Input type="text" name="available" size="sm" value={this.state.available} disabled />
+        </div>
+      </Form>
+    );
+  }
+
+  handleInputChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+}
 
 class BudgetCategoryGroup extends Component {
   constructor(props) {
