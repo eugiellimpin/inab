@@ -210,15 +210,43 @@ class BudgetCategory extends Component {
     super(props);
 
     this.state = {
-      ...props
+      ...props,
+      editing: false,
     }
   }
 
+  toggleEditMode = (event) => {
+    this.setState({ editing: !this.state.editing });
+  }
+
+  handleSubmit = (event) => {
+    if (event.type === 'keypress' && event.which !== 13) {
+      return
+    }
+    this.toggleEditMode();
+  }
+
   render() {
+    const editForm = (
+      <Input
+        autoFocus
+        name="name"
+        type="text"
+        size="sm"
+        value={this.state.name}
+        onChange={this.handleInputChange}
+        onFocus={(e) => e.target.select()}
+        onBlur={this.handleSubmit}
+        onKeyPress={this.handleSubmit}
+      />
+    );
+
     return (
       <Form inline className="row">
         <div className="col-sm-3">
-          <span>{this.state.name}</span>
+          {this.state.editing
+            ? editForm
+            : <a onClick={this.toggleEditMode}>{this.state.name}</a>}
         </div>
         <div className="col-sm-3">
           <Input type="text" name="budget" size="sm" value={this.state.budget} onChange={this.handleInputChange} onClick={(event) => event.target.select() } />
