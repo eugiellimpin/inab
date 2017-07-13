@@ -6,11 +6,16 @@ import {
 } from 'react-router-dom';
 import {
   Button,
+  Col,
   Form,
   FormGroup,
   Input,
+  Nav,
+  NavItem,
+  NavLink,
   Popover,
   PopoverContent,
+  Row,
 } from 'reactstrap';
 import './App.css';
 
@@ -405,13 +410,27 @@ class Budget extends Component {
 const App = () => (
   <Router>
     <div>
-      <ul>
-        <li><Link to="/">Budget</Link></li>
-        <li><Link to="/accounts">Accounts</Link></li>
-      </ul>
+      <Row>
+        <Col sm="2">
+          <Nav vertical>
+            <NavItem>
+              <NavLink>
+                <Link to="/">Budget</Link>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink>
+                <Link to="/accounts">Accounts</Link>
+              </NavLink>
+            </NavItem>
+          </Nav>
+        </Col>
 
-      <Route exact path="/" component={Budget} />
-      <Route path="/accounts" component={TransactionList} />
+        <Col sm="10">
+          <Route exact path="/" component={Budget} />
+          <Route path="/accounts" component={TransactionList} />
+        </Col>
+      </Row>
     </div>
   </Router>
 );
