@@ -268,7 +268,16 @@ class BudgetCategory extends Component {
           <InlineEditableText text={this.state.name}/>
         </div>
         <div className="col-sm-3">
-          <Input type="text" name="budget" size="sm" value={this.state.budget} onChange={this.handleInputChange} onClick={(event) => event.target.select() } />
+          <Input
+            type="text"
+            name="budget"
+            size="sm"
+            value={this.state.budget}
+            onChange={this.handleInputChange}
+            onClick={(event) => event.target.select() }
+            onKeyPress={this.handleUpdateBudget}
+            onBlur={this.handleUpdateBudget}
+          />
         </div>
         <div className="col-sm-3">
           <Input type="text" name="activity" size="sm" value={this.state.activity} disabled />
@@ -278,6 +287,15 @@ class BudgetCategory extends Component {
         </div>
       </Form>
     );
+  }
+
+  handleUpdateBudget = (event) => {
+    if (event.type === 'blur' || (event.type === 'keypress' && event.which === 13)) {
+      let value = Number.parseFloat(event.target.value);
+      value = Number.isNaN(value) ? 0 : value;
+      this.setState({ budget: value });
+      event.target.blur();
+    }
   }
 
   handleInputChange = (event) => {
