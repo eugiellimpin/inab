@@ -311,7 +311,9 @@ class BudgetCategoryGroup extends Component {
     return (
       <div>
         <div>
-          <h3>{this.props.name}</h3>
+          <h3>
+            <InlineEditableText text={this.props.name}/>
+          </h3>
           <Button id={this.props.id} onClick={this.toggleNewCategoryForm} size="sm">Add category</Button>
           <Popover
             placement="right"
