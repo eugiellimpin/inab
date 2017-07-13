@@ -205,12 +205,11 @@ class CategoryForm extends Component {
   }
 }
 
-class BudgetCategory extends Component {
+class InlineEditableText extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      ...props,
+      text: props.text,
       editing: false,
     }
   }
@@ -221,32 +220,52 @@ class BudgetCategory extends Component {
 
   handleSubmit = (event) => {
     if (event.type === 'keypress' && event.which !== 13) {
-      return
+      return;
     }
+
     this.toggleEditMode();
   }
 
+  handleInputChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
   render() {
-    const editForm = (
+    const editField = (
       <Input
-        autoFocus
-        name="name"
-        type="text"
-        size="sm"
-        value={this.state.name}
-        onChange={this.handleInputChange}
-        onFocus={(e) => e.target.select()}
-        onBlur={this.handleSubmit}
-        onKeyPress={this.handleSubmit}
+          autoFocus
+          type="text"
+          name="text"
+          size="sm"
+          value={this.state.text}
+          onChange={this.handleInputChange}
+          onFocus={(e) => e.target.select()}
+          onBlur={this.handleSubmit}
+          onKeyPress={this.handleSubmit}
       />
     );
 
     return (
+      this.state.editing
+        ? editField
+        : <a onClick={this.toggleEditMode}>{this.state.text}</a>
+    );
+  }
+}
+
+class BudgetCategory extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ...props
+    }
+  }
+
+  render() {
+    return (
       <Form inline className="row">
         <div className="col-sm-3">
-          {this.state.editing
-            ? editForm
-            : <a onClick={this.toggleEditMode}>{this.state.name}</a>}
+          <InlineEditableText text={this.state.name}/>
         </div>
         <div className="col-sm-3">
           <Input type="text" name="budget" size="sm" value={this.state.budget} onChange={this.handleInputChange} onClick={(event) => event.target.select() } />
