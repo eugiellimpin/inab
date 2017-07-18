@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Provider, connect } from 'react-redux';
 import {
   BrowserRouter as Router,
   Route,
@@ -17,6 +18,8 @@ import {
   PopoverContent,
   Row,
 } from 'reactstrap';
+import configureStore from './configureStore';
+import { fetchCategoryGroups } from './actions';
 import './App.css';
 
 class TransactionForm extends Component {
@@ -317,6 +320,8 @@ class BudgetCategoryGroup extends Component {
     };
   }
 
+  htmlIdAttr = (groupId) => `category-group-${groupId}`
+
   toggleNewCategoryForm = (event) => {
     this.setState({ newCategoryFormOpen: !this.state.newCategoryFormOpen });
   }
@@ -337,11 +342,11 @@ class BudgetCategoryGroup extends Component {
           <h3>
             <InlineEditableText text={this.props.name}/>
           </h3>
-          <Button id={this.props.id} onClick={this.toggleNewCategoryForm} size="sm">Add category</Button>
+          <Button id={this.htmlIdAttr(this.props.id)} onClick={this.toggleNewCategoryForm} size="sm">Add category</Button>
           <Popover
             placement="right"
             isOpen={this.state.newCategoryFormOpen}
-            target={this.props.id}
+            target={this.htmlIdAttr(this.props.id)}
             toggle={this.toggleNewCategoryForm} >
             <PopoverContent>
               <CategoryForm onCancel={this.toggleNewCategoryForm} onSubmit={this.handleCategoryFormSubmit} />
@@ -358,40 +363,19 @@ class BudgetCategoryGroup extends Component {
 class Budget extends Component {
   constructor(props) {
     super(props);
+  }
 
-    const categoryGroups = [
-      {
-        id: 'immediate-obligations',
-        name: 'Immediate Obligations',
-        categories: [
-          { name: 'Rent/Mortgage', budget: 0, activity: 0, available: 0 },
-          { name: 'Electric', budget: 0, activity: 0, available: 0 },
-          { name: 'Water', budget: 0, activity: 0, available: 0 },
-          { name: 'Internet', budget: 0, activity: 0, available: 0 },
-          { name: 'Groceries', budget: 0, activity: 0, available: 0 },
-          { name: 'Transportation', budget: 0, activity: 0, available: 0 },
-        ],
-      },
-      {
-        id: 'true-expenses',
-        name: 'True Expenses',
-        categories: [
-          { name: 'Clothing', budget: 0, activity: 0, available: 0 },
-          { name: 'Medical', budget: 0, activity: 0, available: 0 },
-        ]
-      },
-      // { name: 'Quality of Life Goals', categories: ['Vacation', 'Fitness', 'Education'] },
-      // { name: 'Just for Fun', categories: ['Dining Out', 'Gaming', 'Fun Money'] },
-    ];
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchCategoryGroups());
+  }
 
-    this.state = {
-      categoryGroups
-    };
+  componentDidUpdate() {
   }
 
   render() {
-    const groups = this.state.categoryGroups.map((group) => (
-      <BudgetCategoryGroup {...group} onAddNewCategory={this.handleAddNewCategory(group.id)}  />
+    const groups = this.props.categoryGroups.map((group) => (
+       <BudgetCategoryGroup key={group.id} {...group} onAddNewCategory={this.handleAddNewCategory(group.id)}  />
     ));
 
     return (
@@ -402,37 +386,44 @@ class Budget extends Component {
   }
 
   handleAddNewCategory = (categoryGroupId) => (newCategoryName) => {
-    const categoryGroup = this.state.categoryGroups.find((group) => group.id === categoryGroupId);
-    categoryGroup.categories.push({ name: newCategoryName, budget: 0, activity: 0, available: 0 });
+    console.log(`add new category ${newCategoryName} to ${categoryGroupId}`);
   }
 }
 
-const App = () => (
-  <Router>
-    <div>
-      <Row>
-        <Col sm="2">
-          <Nav vertical>
-            <NavItem>
-              <NavLink>
-                <Link to="/">Budget</Link>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink>
-                <Link to="/accounts">Accounts</Link>
-              </NavLink>
-            </NavItem>
-          </Nav>
-        </Col>
+const mapStateToProps = (state) => {
+  return { ...state };
+};
 
-        <Col sm="10">
-          <Route exact path="/" component={Budget} />
-          <Route path="/accounts" component={TransactionList} />
-        </Col>
-      </Row>
-    </div>
-  </Router>
+const BudgetContainer = connect(mapStateToProps)(Budget);
+
+const App = () => (
+  <Provider store={configureStore()}>
+    <Router>
+      <div>
+        <Row>
+          <Col sm="2">
+            <Nav vertical>
+              <NavItem>
+                <NavLink>
+                  <Link to="/">Budget</Link>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink>
+                  <Link to="/accounts">Accounts</Link>
+                </NavLink>
+              </NavItem>
+            </Nav>
+          </Col>
+
+          <Col sm="10">
+            <Route exact path="/" component={BudgetContainer} />
+            <Route path="/accounts" component={TransactionList} />
+          </Col>
+        </Row>
+      </div>
+    </Router>
+  </Provider>
 );
 
 export default App;
